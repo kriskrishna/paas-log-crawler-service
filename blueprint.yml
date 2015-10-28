@@ -1,0 +1,30 @@
+version: 1.0
+name: paas-cw-event-service
+
+build:
+- name: maven-build
+  type: maven
+  run_sonar: true
+
+deploy:
+  prod-dev:
+    events:  # Will handle the Cloudwatch Alarms and forward to Lambda to forward to JIRA
+      location: development-fh5-useast1-primary-1
+      type: sns
+    lambda:  # Will handle the Cloudwatch Alarms about Lambda failures and forward to DPT e-mail.
+      location: development-fh5-useast1-primary-1
+      type: sns
+  prod-test:
+    events:
+      location: test-fh3-useast1-primary-1
+      type: sns
+    lambda:
+      location: test-fh3-useast1-primary-1
+      type: sns
+  prod-prod:
+    events:
+      location: production-fh1-useast1-primary-1
+      type: sns
+    lambda:
+      location: production-fh1-useast1-primary-1
+      type: sns
